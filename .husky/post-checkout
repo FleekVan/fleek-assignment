@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# when the checkout was a commit, and not checkout of just a file path, and the checkout was not a bare commit without a branch name
+if [ "$3" = "1" ] && [ -n "$(git branch --show-current)" ]; then
+  pnpm install --frozen-lockfile
+fi

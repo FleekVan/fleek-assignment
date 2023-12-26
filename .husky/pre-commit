@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Apply prettier to all staged files
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+if [ -n "$FILES" ]; then
+    echo "Applying prettier... " >&2
+    echo "$FILES" | xargs ./node_modules/.bin/prettier --ignore-unknown --write
+    echo "$FILES" | xargs git add
+fi
+
+./node_modules/.bin/manypkg check

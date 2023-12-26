@@ -1,0 +1,18 @@
+{
+  "name": "fleek-assignment",
+  "author": "Ivan Tanev <van.tanev@gmail.com>",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=20.10.0",
+    "pnpm": ">=8.12.0"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@manypkg/cli": "^0.21.1",
+    "husky": "^8.0.3",
+    "prettier": "^3.1.1"
+  }
+}
