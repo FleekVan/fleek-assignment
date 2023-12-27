@@ -29,7 +29,7 @@ export class Database implements IDatabase {
     } = JSON.parse(dbSecret.SecretString!);
 
     this.connection = mysql.createPool({
-      host: dbConfig.host,
+      host: process.env.DB_HOST ?? dbConfig.host,
       port: dbConfig.port,
       database: dbConfig.dbname,
       user: dbConfig.username,

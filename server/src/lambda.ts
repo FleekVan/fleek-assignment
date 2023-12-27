@@ -13,6 +13,7 @@ export const handler = startServerAndCreateLambdaHandler(
     context: async () => {
       const db = new Database();
       await db.connect();
+
       return {
         con: db.con,
       };

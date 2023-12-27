@@ -66,6 +66,17 @@ export class ServerStack extends cdk.Stack {
       credentials: rds.Credentials.fromGeneratedSecret("admin"),
     });
 
+    const dbProxy = new rds.DatabaseProxy(this, "Proxy", {
+      proxyTarget: rds.ProxyTarget.fromInstance(db),
+      secrets: [db.secret!],
+      securityGroups: [dbSecurityGroup],
+      vpc,
+      requireTLS: false,
+      vpcSubnets: vpc.selectSubnets({
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      }),
+    });
+
     const handler = new lambda.Function(this, "handler-graphql", {
       vpc,
       vpcSubnets: vpc.selectSubnets({
@@ -88,6 +99,7 @@ export class ServerStack extends cdk.Stack {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1", // optimization
         AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE: "1", // sdk v3 sucks
         DB_SECRET_ARN: db.secret!.secretFullArn!,
+        DB_HOST: dbProxy.endpoint,
       },
     });
 
