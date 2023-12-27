@@ -1,0 +1,4 @@
+{
+  "main": "dist/fleek-packages-database-model.cjs.js",
+  "module": "dist/fleek-packages-database-model.esm.js"
+}

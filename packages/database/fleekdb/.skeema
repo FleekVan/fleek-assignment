@@ -1,6 +1,7 @@
 generator=skeema:1.11.1-community
 flavor=mysql:8.0
 workspace=docker
+safe-below-size=1 # allow tables to be dropped if they have no records
 
 [production]
 host=fleek-graphql-production-databaseebde4557-xalhhu0yizs1.c1cow6s6wwjv.eu-west-1.rds.amazonaws.com

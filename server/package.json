@@ -2,7 +2,7 @@
   "name": "@fleek-assignment/server",
   "version": "1.0.0",
   "scripts": {
-    "dev": "tsx --watch src/dev.ts",
+    "dev": "AWS_PROFILE=fleek tsx --watch src/dev.ts",
     "tsc": "tsc",
     "test": "jest",
     "cdk": "cdk --profile=fleek",
@@ -14,7 +14,9 @@
     "@as-integrations/aws-lambda": "^3.1.0",
     "@fleek-packages/config": "workspace:^",
     "@fleek-packages/database": "workspace:^",
-    "graphql": "^16.8.1"
+    "graphql": "^16.8.1",
+    "graphql-compose": "^9.0.10",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@mrgrain/cdk-esbuild": "^5.0.8",
@@ -24,6 +26,7 @@
     "aws-cdk-lib": "^2.116.1",
     "constructs": "^10.3.0",
     "jest": "30.0.0-alpha.2",
+    "mysql2": "^3.6.5",
     "source-map-support": "^0.5.21",
     "tsx": "^4.7.0",
     "undici": "^6.2.1"

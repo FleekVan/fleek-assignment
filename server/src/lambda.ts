@@ -4,6 +4,7 @@ import {
 } from "@as-integrations/aws-lambda";
 import { server } from "./server";
 import { Database } from "@fleek-packages/database";
+import { createContext } from "./graphql/createContext";
 
 export const handler = startServerAndCreateLambdaHandler(
   server,
@@ -14,9 +15,7 @@ export const handler = startServerAndCreateLambdaHandler(
       const db = new Database("production");
       await db.connect();
 
-      return {
-        con: db.con,
-      };
+      return createContext(db.con);
     },
   },
 );

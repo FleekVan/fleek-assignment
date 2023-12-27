@@ -14,6 +14,11 @@
       "module": "./dist/fleek-packages-database.esm.js",
       "default": "./dist/fleek-packages-database.cjs.js"
     },
+    "./model": {
+      "types": "./model/dist/fleek-packages-database-model.cjs.js",
+      "module": "./model/dist/fleek-packages-database-model.esm.js",
+      "default": "./model/dist/fleek-packages-database-model.cjs.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -23,7 +28,8 @@
   "preconstruct": {
     "exports": true,
     "entrypoints": [
-      "index.ts"
+      "index.ts",
+      "model.ts"
     ],
     "___experimentalFlags_WILL_CHANGE_IN_PATCH": {
       "importsConditions": true
@@ -33,6 +39,7 @@
     "@fleek-packages/config": "workspace:^",
     "aws-sdk": "^2.1525.0",
     "mysql2": "^3.6.5",
-    "tsx": "^4.7.0"
+    "tsx": "^4.7.0",
+    "zod": "^3.22.4"
   }
 }

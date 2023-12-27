@@ -1,24 +1,10 @@
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
-
-// The GraphQL schema
-const typeDefs = `#graphql
-  type Query {
-    hello: String
-  }
-`;
-
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    hello: () => "world",
-  },
-};
+import { createSchema } from "./graphql/createSchema";
 
 // Set up Apollo Server
 export const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: createSchema(),
 
   // Enable GraphQL Playground even on prod, because it makes it easier to test.
   // Should not be enabled on a real production deployment
