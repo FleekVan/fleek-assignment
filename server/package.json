@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx --watch src/dev.ts",
+    "tsc": "tsc",
     "test": "jest",
     "cdk": "cdk --profile=fleek",
-    "deploy:production": "pnpm cdk deploy production"
+    "deploy:production": "pnpm cdk deploy production --require-approval=never",
+    "ci": "npm-run-all -l tsc test"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "@as-integrations/aws-lambda": "^3.1.0",
+    "@fleek-packages/config": "workspace:^",
     "@fleek-packages/database": "workspace:^",
     "graphql": "^16.8.1"
   },

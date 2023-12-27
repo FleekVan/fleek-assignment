@@ -1,0 +1,33 @@
+{
+  "name": "@fleek-packages/database",
+  "version": "1.0.0",
+  "main": "dist/fleek-packages-database.cjs.js",
+  "module": "dist/fleek-packages-database.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/fleek-packages-database.cjs.js",
+      "module": "./dist/fleek-packages-database.esm.js",
+      "default": "./dist/fleek-packages-database.cjs.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "ci": "npm-run-all -l tsc"
+  },
+  "private": true,
+  "preconstruct": {
+    "exports": true,
+    "entrypoints": [
+      "index.ts"
+    ],
+    "___experimentalFlags_WILL_CHANGE_IN_PATCH": {
+      "importsConditions": true
+    }
+  },
+  "dependencies": {
+    "@fleek-packages/config": "workspace:^",
+    "aws-sdk": "^2.1525.0",
+    "mysql2": "^3.6.5"
+  }
+}

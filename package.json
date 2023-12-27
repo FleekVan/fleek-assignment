@@ -8,14 +8,26 @@
     "pnpm": ">=8.12.0"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "preconstruct dev",
+    "ci": "pnpm run -r ci"
   },
   "dependencies": {
-    "@manypkg/cli": "^0.21.1",
+    "@preconstruct/cli": "^2.8.2",
     "@types/node": "^20.10.5",
     "husky": "^8.0.3",
     "jsx": "^0.9.89",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3"
+  },
+  "preconstruct": {
+    "packages": [
+      "packages/*",
+      "!packages/config"
+    ],
+    "___experimentalFlags_WILL_CHANGE_IN_PATCH": {
+      "importsConditions": true
+    }
   }
 }

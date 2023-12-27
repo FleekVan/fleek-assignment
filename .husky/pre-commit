@@ -8,5 +8,3 @@ if [ -n "$FILES" ]; then
     echo "$FILES" | xargs ./node_modules/.bin/prettier --ignore-unknown --write
     echo "$FILES" | xargs git add
 fi
-
-./node_modules/.bin/manypkg check

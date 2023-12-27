@@ -30,16 +30,18 @@ export class ServerStack extends cdk.Stack {
         },
       ],
     });
-    const dbSecurityGroup = new ec2.SecurityGroup(this, "DbSecurityGroup", {
-      vpc,
-    });
-
     const lambdaSecurityGroup = new ec2.SecurityGroup(
       this,
       "LambdaSecurityGroup",
-      {
-        vpc,
-      },
+      { vpc },
+    );
+    const dbSecurityGroup = new ec2.SecurityGroup(this, "DbSecurityGroup", {
+      vpc,
+    });
+    dbSecurityGroup.addIngressRule(
+      lambdaSecurityGroup,
+      ec2.Port.tcp(3306),
+      "allow lambda to connect to db",
     );
 
     const db = new rds.DatabaseInstance(this, "database", {
@@ -84,12 +86,12 @@ export class ServerStack extends cdk.Stack {
       memorySize: 1024, // lambda performs better with more memory
       environment: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1", // optimization
-        DB_ENDPOINT_ADDRESS: db.dbInstanceEndpointAddress,
-        DB_NAME: this.databaseName,
-        DB_PORT: db.dbInstanceEndpointPort,
-        DB_SECRET_ARN: db.secret?.secretFullArn || "",
+        AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE: "1", // sdk v3 sucks
+        DB_SECRET_ARN: db.secret!.secretFullArn!,
       },
     });
+
+    db.secret!.grantRead(handler);
 
     const api = new apigwv2.HttpApi(this, "http-api-gateway", {
       corsPreflight: {

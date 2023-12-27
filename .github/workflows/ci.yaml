@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: "--max_old_space_size=4096"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - run: pnpm install
+
+      # run tsc/test
+      - run: pnpm run ci
+        if: ${{ always() }}
+      # preconstruct make sure all packages are correctly configured
+      - run: pnpm preconstruct validate
+        if: ${{ always() }}
+      # ensure prettier style is applied everywhere
+      - run: pnpm prettier --check .
+        if: ${{ always() }}
