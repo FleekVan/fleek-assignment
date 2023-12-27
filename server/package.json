@@ -2,16 +2,26 @@
   "name": "@fleek-assignment/server",
   "version": "1.0.0",
   "scripts": {
-    "deploy:production": "cdk deploy production"
+    "dev": "tsx --watch src/dev.ts",
+    "test": "jest",
+    "cdk": "cdk --proile=fleek",
+    "deploy:production": "pnpm cdk deploy production"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@as-integrations/aws-lambda": "^3.1.0",
     "graphql": "^16.8.1"
   },
   "devDependencies": {
+    "@mrgrain/cdk-esbuild": "^5.0.8",
+    "@swc/jest": "^0.2.29",
+    "@types/jest": "^29.5.11",
     "aws-cdk": "^2.116.1",
     "aws-cdk-lib": "^2.116.1",
     "constructs": "^10.3.0",
+    "jest": "30.0.0-alpha.2",
     "source-map-support": "^0.5.21",
-    "tsx": "^4.7.0"
+    "tsx": "^4.7.0",
+    "undici": "^6.2.1"
   }
 }
