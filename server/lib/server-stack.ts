@@ -43,12 +43,21 @@ export class ServerStack extends cdk.Stack {
       ec2.Port.tcp(3306),
       "allow lambda to connect to db",
     );
+    // In a real setup, this would not exist
+    // It's public here for easy skeema database migrations. Otherwise we need to run the migrations from an ec2 instance in the private subnet.
+    dbSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4("0.0.0.0/0"),
+      ec2.Port.tcp(3306),
+      "allow everyone to connect to the db",
+    );
 
     const db = new rds.DatabaseInstance(this, "database", {
       // networking
       vpc,
       vpcSubnets: vpc.selectSubnets({
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+        // In a real setup, this will be ec2.SubnetType.PRIVATE_WITH_EGRESS.
+        // It's public here for easy skeema database migrations. Otherwise we need to run the migrations from an ec2 instance in the private subnet.
+        subnetType: ec2.SubnetType.PUBLIC,
       }),
       securityGroups: [dbSecurityGroup],
 
@@ -61,9 +70,11 @@ export class ServerStack extends cdk.Stack {
       maxAllocatedStorage: 200,
 
       // credentials
-
       databaseName: this.databaseName,
       credentials: rds.Credentials.fromGeneratedSecret("admin"),
+      // In a real setup, this would be false.
+      // It's public here for easy skeema database migrations. Otherwise we need to run the migrations from an ec2 instance in the private subnet.
+      publiclyAccessible: true,
     });
 
     const dbProxy = new rds.DatabaseProxy(this, "Proxy", {

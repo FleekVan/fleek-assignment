@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Set the current dir to the script dir
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+
+if [[ "$2" =~ ^(production)$ ]]; then
+    >&2 echo "Skeema is executing for a known environment, setting mysql password from AWS SecretsSmanager"
+    MYSQL_PWD=$(../node_modules/.bin/tsx ../bin/retrieve-password.ts "$2") || (>&2 echo "Error getting password for environment")
+    export MYSQL_PWD
+fi
+
+../vendor/skeema_linux "$@"

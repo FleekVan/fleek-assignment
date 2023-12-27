@@ -1,34 +1,19 @@
-import type { IDatabase } from "./types";
+import { getDatabaseSecret } from "./utils/getDatabaseSecret";
+import type { IDatabase, Environment } from "./types";
 import mysql from "mysql2/promise";
-import * as AWS from "aws-sdk";
 
 (Symbol as any).asyncDispose ??= Symbol("Symbol.asyncDispose");
 
 export class Database implements IDatabase {
   private connection: mysql.Connection | null = null;
 
-  constructor() {}
+  constructor(private env: Environment) {}
 
   async connect() {
-    const sm = new AWS.SecretsManager({
-      region: process.env.AWS_REGION,
-    });
-
-    const dbSecret = await sm
-      .getSecretValue({ SecretId: process.env.DB_SECRET_ARN! })
-      .promise();
-
-    const dbConfig: {
-      username: string;
-      password: string;
-      dbname: string;
-      engine: string;
-      port: number;
-      dbInstanceIdentifier: string;
-      host: string;
-    } = JSON.parse(dbSecret.SecretString!);
+    const dbConfig = await getDatabaseSecret(this.env);
 
     this.connection = mysql.createPool({
+      // DB_HOST allows for overriding with RDS Proxy host
       host: process.env.DB_HOST ?? dbConfig.host,
       port: dbConfig.port,
       database: dbConfig.dbname,

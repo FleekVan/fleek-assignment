@@ -11,7 +11,7 @@ export const handler = startServerAndCreateLambdaHandler(
   handlers.createAPIGatewayProxyEventV2RequestHandler(),
   {
     context: async () => {
-      const db = new Database();
+      const db = new Database("production");
       await db.connect();
 
       return {

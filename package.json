@@ -10,15 +10,20 @@
   "scripts": {
     "prepare": "husky install",
     "postinstall": "preconstruct dev",
+    "db:push:production": "pnpm skeema push production",
+    "db:diff:production": "pnpm skeema diff production",
+    "db:pull:production": "pnpm skeema pull production",
     "ci": "pnpm run -r ci"
   },
   "dependencies": {
+    "@fleek-packages/database": "workspace:^",
     "@preconstruct/cli": "^2.8.2",
     "@types/node": "^20.10.5",
     "husky": "^8.0.3",
     "jsx": "^0.9.89",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.1.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "preconstruct": {

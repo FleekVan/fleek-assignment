@@ -4,3 +4,5 @@ export interface IDatabase extends AsyncDisposable {
   connect(): Promise<void>;
   get con(): mysql.Connection;
 }
+
+export type Environment = "production";

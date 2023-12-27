@@ -1,8 +1,13 @@
 {
   "name": "@fleek-packages/database",
   "version": "1.0.0",
+  "private": true,
   "main": "dist/fleek-packages-database.cjs.js",
   "module": "dist/fleek-packages-database.esm.js",
+  "bin": {
+    "database-retrieve-password": "bin/retrieve-password.ts",
+    "skeema": "fleekdb/skeema"
+  },
   "exports": {
     ".": {
       "types": "./dist/fleek-packages-database.cjs.js",
@@ -15,7 +20,6 @@
     "tsc": "tsc",
     "ci": "npm-run-all -l tsc"
   },
-  "private": true,
   "preconstruct": {
     "exports": true,
     "entrypoints": [
@@ -28,6 +32,7 @@
   "dependencies": {
     "@fleek-packages/config": "workspace:^",
     "aws-sdk": "^2.1525.0",
-    "mysql2": "^3.6.5"
+    "mysql2": "^3.6.5",
+    "tsx": "^4.7.0"
   }
 }
