@@ -9,12 +9,20 @@ export function zodValidate<T extends z.ZodType<any>>(
   try {
     return schema.parse(input);
   } catch (e) {
-    const validationError = fromZodError(e);
-    throw new GraphQLError(validationError.message, {
-      extensions: {
-        code: "BAD_USER_INPUT",
-        validationError,
-      },
-    });
+    if (e instanceof z.ZodError) {
+      const validationError = fromZodError(e);
+      throw new GraphQLError(validationError.message, {
+        extensions: {
+          code: "BAD_USER_INPUT",
+          validationError,
+        },
+      });
+    } else {
+      throw new GraphQLError(e.message, {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
   }
 }

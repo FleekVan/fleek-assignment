@@ -16,6 +16,22 @@ describe("StoreRecordRepository", () => {
     await db.deleteFrom("StoreRecord").execute();
   });
 
+  test("#findOne returns a store record", async () => {
+    const storeRecord = await insertStoreRecord(db);
+
+    const result = await subject.findOne(storeRecord.id);
+
+    expect(result).toMatchObject(storeRecord);
+  });
+
+  test("#findOne throws if the id does not exist", async () => {
+    await expect(
+      subject.findOne(999n),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"No StoreRecord matched the given id"`,
+    );
+  });
+
   test("#findMany returns all store records", async () => {
     const storeRecords = [createStoreRecord(), createStoreRecord()];
     for (const storeRecord of storeRecords) {

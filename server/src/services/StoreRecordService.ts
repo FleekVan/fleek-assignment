@@ -4,6 +4,10 @@ import { GraphQLError } from "graphql";
 export class StoreRecordService {
   constructor(private repo: StoreRecordRepository) {}
 
+  async findOne(id: bigint) {
+    return await this.repo.findOne(id);
+  }
+
   async findMany(query: { limit: number; offset: number }) {
     return await this.repo.findMany(query);
   }

@@ -6,6 +6,7 @@ import {
   StoreRecordUpdateSchema,
 } from "../../schema/StoreRecordSchema";
 import { zodValidate } from "../../utils/zodValidate";
+import { z } from "zod";
 
 export const StoreRecordType = ObjectTypeComposer.createTemp<
   DB["StoreRecord"],
@@ -16,6 +17,21 @@ export const StoreRecordType = ObjectTypeComposer.createTemp<
     id: "ID!",
     name: "String!",
     value: "String!",
+  },
+});
+
+StoreRecordType.addResolver({
+  name: "findOne",
+  type: StoreRecordType,
+  args: {
+    id: "ID!",
+  },
+  resolve: async ({
+    args,
+    context,
+  }: ResolverResolveParams<unknown, GraphQLContext, { id: string }>) => {
+    const id = zodValidate(z.string().pipe(z.coerce.bigint()), args.id);
+    return await context.services.storeRecord.findOne(id);
   },
 });
 

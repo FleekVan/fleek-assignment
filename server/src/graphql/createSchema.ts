@@ -10,6 +10,7 @@ export function createSchema() {
       type: "String",
       resolve: () => "Hello, World!",
     },
+    storeRecord: StoreRecordType.getResolver("findOne"),
     storeRecordList: StoreRecordListType.getResolver("findMany"),
   });
 

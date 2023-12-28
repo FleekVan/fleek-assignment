@@ -6,7 +6,7 @@ export const StoreRecordSchema = z.object({
 });
 
 export const StoreRecordUpdateSchema = z.object({
-  id: z.string().transform((x) => BigInt(x)),
+  id: z.string().pipe(z.coerce.bigint()),
   name: z.string().min(1).max(50),
   value: z.string().min(1).max(100),
 });

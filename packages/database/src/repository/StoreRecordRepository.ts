@@ -3,6 +3,10 @@ import type { Database } from "..";
 export class StoreRecordRepository {
   constructor(private db: Database) {}
 
+  async findOne(id: bigint) {
+    return await this._findOne(this.db, id);
+  }
+
   async findMany(query: { limit: number; offset: number }) {
     return this.db
       .selectFrom("StoreRecord")
@@ -29,16 +33,7 @@ export class StoreRecordRepository {
 
   async updateOne(record: { id: bigint; name: string; value: string }) {
     return await this.db.transaction().execute(async (trx) => {
-      try {
-        // check if the record exists
-        await trx
-          .selectFrom("StoreRecord")
-          .select("id")
-          .where("id", "=", record.id)
-          .executeTakeFirstOrThrow();
-      } catch (e) {
-        throw new Error("No StoreRecord matched the given id");
-      }
+      await this._findOne(trx, record.id);
 
       // Update the record.
       // We can't use num rows affected to verify the record existed,
@@ -55,5 +50,17 @@ export class StoreRecordRepository {
         .where("id", "=", record.id)
         .executeTakeFirstOrThrow();
     });
+  }
+
+  private async _findOne(db: Database, id: bigint) {
+    try {
+      return await db
+        .selectFrom("StoreRecord")
+        .selectAll()
+        .where("id", "=", id)
+        .executeTakeFirstOrThrow();
+    } catch (e) {
+      throw new Error("No StoreRecord matched the given id");
+    }
   }
 }
