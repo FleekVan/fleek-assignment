@@ -6,6 +6,10 @@
     },
     "ci": {
       "dependsOn": ["topo"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
     }
   },
   "globalDependencies": ["packages/config/tsconfig.base.json"]

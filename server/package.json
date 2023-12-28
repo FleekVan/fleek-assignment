@@ -2,7 +2,7 @@
   "name": "@fleek-assignment/server",
   "version": "1.0.0",
   "scripts": {
-    "dev": "AWS_PROFILE=fleek tsx --watch src/dev.ts",
+    "dev": "AWS_PROFILE=fleek tsx watch --clear-screen=false --ignore 'cdk.out/**' --ignore 'node_modules/**' --inspect src/dev.ts",
     "tsc": "tsc",
     "test": "jest",
     "cdk": "cdk --profile=fleek",
