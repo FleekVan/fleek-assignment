@@ -17,6 +17,7 @@ export function createSchema() {
     storeRecordCreate: StoreRecordType.getResolver("createOne"),
     storeRecordUpdate: StoreRecordType.getResolver("updateOne"),
     storeRecordCreateMany: StoreRecordListType.getResolver("createMany"),
+    storeRecordUpdateMany: StoreRecordListType.getResolver("updateMany"),
   });
 
   return composer.buildSchema();
