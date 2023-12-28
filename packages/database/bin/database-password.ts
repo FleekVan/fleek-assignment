@@ -4,7 +4,7 @@ process.env.AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE = "1";
 process.env.AWS_PROFILE = process.env.AWS_PROFILE ?? "fleek";
 
 import { Environment } from "../src/types";
-import { getDatabaseSecret } from "../src/utils/getDatabaseSecret";
+import { getDatabaseConfig } from "../src/utils/getDatabaseConfig";
 
 async function main() {
   const environment = process.argv.slice(2)[0];
@@ -12,7 +12,7 @@ async function main() {
     throw new Error("Missing environment argument");
   }
 
-  const dbConfig = await getDatabaseSecret(environment as Environment);
+  const dbConfig = await getDatabaseConfig(environment as Environment);
 
   console.log(dbConfig.password);
 }

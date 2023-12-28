@@ -1,6 +1,6 @@
-import { getDatabaseSecret } from "./utils/getDatabaseSecret";
 import type { IDatabase, Environment } from "./types";
 import mysql from "mysql2/promise";
+import { getDatabaseConfig } from "./utils/getDatabaseConfig";
 
 (Symbol as any).asyncDispose ??= Symbol("Symbol.asyncDispose");
 
@@ -10,7 +10,7 @@ export class Database implements IDatabase {
   constructor(private env: Environment) {}
 
   async connect() {
-    const dbConfig = await getDatabaseSecret(this.env);
+    const dbConfig = await getDatabaseConfig(this.env);
 
     this.connection = mysql.createPool({
       // DB_HOST allows for overriding with RDS Proxy host

@@ -1,12 +1,15 @@
 import * as AWS from "aws-sdk";
-import { Environment } from "../types";
+import type { Environment } from "../types";
+import { DatabaseConfigSchema, DatabaseConfig } from "../schema/DatabaseConfig";
 
 const ENV_TO_SECRET_ARN: Record<Environment, string> = {
   production:
     "arn:aws:secretsmanager:eu-west-1:046557722402:secret:productiondatabaseSecretBD3-FOSrVBJFewqE-GwiDBp",
 };
 
-export async function getDatabaseSecret(env: Environment) {
+export async function getDatabaseConfig(
+  env: Environment,
+): Promise<DatabaseConfig> {
   const SecretId = ENV_TO_SECRET_ARN[env];
   if (!SecretId) {
     throw new Error(
@@ -20,15 +23,5 @@ export async function getDatabaseSecret(env: Environment) {
 
   const dbSecret = await sm.getSecretValue({ SecretId }).promise();
 
-  const dbConfig: {
-    username: string;
-    password: string;
-    dbname: string;
-    engine: string;
-    port: number;
-    dbInstanceIdentifier: string;
-    host: string;
-  } = JSON.parse(dbSecret.SecretString!);
-
-  return dbConfig;
+  return DatabaseConfigSchema.parse(JSON.parse(dbSecret.SecretString!));
 }

@@ -5,7 +5,8 @@
   "main": "dist/fleek-packages-database.cjs.js",
   "module": "dist/fleek-packages-database.esm.js",
   "bin": {
-    "database-retrieve-password": "bin/retrieve-password.ts",
+    "database-password": "bin/database-password.ts",
+    "database-url": "bin/database-url.ts",
     "skeema": "fleekdb/skeema"
   },
   "exports": {
@@ -38,8 +39,12 @@
   "dependencies": {
     "@fleek-packages/config": "workspace:^",
     "aws-sdk": "^2.1525.0",
+    "kysely": "^0.26.3",
     "mysql2": "^3.6.5",
     "tsx": "^4.7.0",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "kysely-codegen": "^0.11.0"
   }
 }
