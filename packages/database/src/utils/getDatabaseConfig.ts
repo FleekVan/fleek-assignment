@@ -1,6 +1,7 @@
 import * as AWS from "aws-sdk";
 import type { Environment } from "../types";
-import { DatabaseConfigSchema, DatabaseConfig } from "../schema/DatabaseConfig";
+import { DatabaseConfig } from "../schema/DatabaseConfig";
+import { SecretsManagerDatabaseConfigSchema } from "../schema/SecretsManagerDatabaseConfig";
 
 const ENV_TO_SECRET_ARN: Record<Environment, string> = {
   production:
@@ -23,5 +24,16 @@ export async function getDatabaseConfig(
 
   const dbSecret = await sm.getSecretValue({ SecretId }).promise();
 
-  return DatabaseConfigSchema.parse(JSON.parse(dbSecret.SecretString!));
+  const config = SecretsManagerDatabaseConfigSchema.parse(
+    JSON.parse(dbSecret.SecretString!),
+  );
+
+  return {
+    // DB_HOST allows for overriding with RDS Proxy host
+    host: process.env.DB_HOST ?? config.host,
+    port: config.port,
+    database: config.dbname,
+    user: config.username,
+    password: config.password,
+  };
 }

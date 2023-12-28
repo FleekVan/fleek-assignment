@@ -19,8 +19,9 @@
   },
   "scripts": {
     "tsc": "tsc",
+    "test": "jest",
     "db:codegen": "DATABASE_URL=$(pnpm database-url production) pnpm kysely-codegen --dialect mysql --out-file src/db-codegen.ts",
-    "ci": "npm-run-all -l tsc"
+    "ci": "npm-run-all -l tsc test"
   },
   "preconstruct": {
     "exports": true,
@@ -40,6 +41,11 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "kysely-codegen": "^0.11.0"
+    "@sqltools/formatter": "^1.2.5",
+    "@testcontainers/mysql": "^10.4.0",
+    "@types/jest": "^29.5.11",
+    "jest": "30.0.0-alpha.2",
+    "kysely-codegen": "^0.11.0",
+    "testcontainers": "^10.4.0"
   }
 }

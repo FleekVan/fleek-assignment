@@ -1,13 +1,12 @@
 import { z } from "zod";
+import { NonEmptyString } from "../utils/NonEmptyString";
 
 export const DatabaseConfigSchema = z.object({
-  username: z.string(),
-  password: z.string(),
-  dbname: z.string(),
-  engine: z.string(),
+  host: NonEmptyString,
   port: z.number(),
-  dbInstanceIdentifier: z.string(),
-  host: z.string(),
+  database: NonEmptyString,
+  user: NonEmptyString,
+  password: NonEmptyString,
 });
 
 export type DatabaseConfig = z.infer<typeof DatabaseConfigSchema>;
