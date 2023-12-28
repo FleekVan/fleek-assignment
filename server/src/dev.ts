@@ -1,4 +1,4 @@
-import { Database } from "@fleek-packages/database";
+import { createDatabase } from "@fleek-packages/database";
 import { server } from "./server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { createContext } from "./graphql/createContext";
@@ -7,10 +7,9 @@ async function main() {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 5001 },
     context: async () => {
-      const db = new Database("production");
-      await db.connect();
+      const db = await createDatabase("production");
 
-      return createContext(db.con);
+      return createContext(db);
     },
   });
 

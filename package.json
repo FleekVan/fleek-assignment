@@ -10,9 +10,9 @@
   "scripts": {
     "prepare": "husky install",
     "postinstall": "preconstruct dev",
-    "db:push:production": "pnpm skeema push production",
+    "db:push:production": "pnpm skeema push production && pnpm run --filter=@fleek-packages/database db:codegen",
     "db:diff:production": "pnpm skeema diff production",
-    "db:pull:production": "pnpm skeema pull production",
+    "db:pull:production": "pnpm skeema pull production && pnpm run --filter=@fleek-packages/database db:codegen",
     "ci": "pnpm run -r ci"
   },
   "dependencies": {

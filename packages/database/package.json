@@ -24,6 +24,7 @@
   },
   "scripts": {
     "tsc": "tsc",
+    "db:codegen": "DATABASE_URL=$(pnpm database-url production) pnpm kysely-codegen --dialect mysql --out-file src/db-codegen.ts",
     "ci": "npm-run-all -l tsc"
   },
   "preconstruct": {

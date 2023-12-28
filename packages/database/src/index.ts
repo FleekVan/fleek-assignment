@@ -1,2 +1,2 @@
-export { Database } from "./Database";
-export type { IDatabase } from "./types";
+export { createDatabase } from "./createDatabase";
+export type { Database } from "./createDatabase";

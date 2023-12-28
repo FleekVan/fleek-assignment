@@ -1,18 +1,14 @@
-import type { IDatabase } from "@fleek-packages/database";
-import type mysql from "mysql2";
+import type { Database } from "@fleek-packages/database";
 
 export class StoreRecordService {
-  constructor(private con: IDatabase["con"]) {}
+  constructor(private db: Database) {}
 
-  async findMany(query: {
-    limit: number;
-    offset: number;
-  }): Promise<mysql.RowDataPacket[]> {
-    const [rows] = await this.con.query(
-      "SELECT * FROM `StoreRecord` LIMIT ?  OFFSET ?",
-      [query.limit, query.offset],
-    );
-
-    return rows as mysql.RowDataPacket[];
+  async findMany(query: { limit: number; offset: number }) {
+    return this.db
+      .selectFrom("StoreRecord")
+      .limit(query.limit)
+      .offset(query.offset)
+      .selectAll()
+      .execute();
   }
 }

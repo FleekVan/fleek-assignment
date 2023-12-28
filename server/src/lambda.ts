@@ -3,19 +3,17 @@ import {
   handlers,
 } from "@as-integrations/aws-lambda";
 import { server } from "./server";
-import { Database } from "@fleek-packages/database";
+import { createDatabase } from "@fleek-packages/database";
 import { createContext } from "./graphql/createContext";
 
 export const handler = startServerAndCreateLambdaHandler(
   server,
-  // We will be using the Proxy V2 handler
   handlers.createAPIGatewayProxyEventV2RequestHandler(),
   {
     context: async () => {
-      const db = new Database("production");
-      await db.connect();
+      const db = await createDatabase("production");
 
-      return createContext(db.con);
+      return createContext(db);
     },
   },
 );
