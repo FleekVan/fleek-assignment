@@ -35,9 +35,9 @@ export async function migrateDatabase(db: Database) {
       return;
     }
     if (currentTables.length > 0) {
-      await sql`DROP DATABASE holibob`.execute(db);
-      await sql`CREATE DATABASE holibob`.execute(db);
-      await sql`USE holibob`.execute(db);
+      await sql`DROP DATABASE ${sql.id(dbName)}`.execute(db);
+      await sql`CREATE DATABASE ${sql.id(dbName)}`.execute(db);
+      await sql`USE ${sql.id(dbName)}`.execute(db);
     }
 
     for (const stmt of statements) {

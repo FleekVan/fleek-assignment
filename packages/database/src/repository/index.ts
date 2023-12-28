@@ -1,0 +1,1 @@
+export { StoreRecordRepository } from "./StoreRecordRepository";

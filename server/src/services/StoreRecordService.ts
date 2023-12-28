@@ -1,14 +1,9 @@
-import type { Database } from "@fleek-packages/database";
+import { StoreRecordRepository } from "@fleek-packages/database/repository";
 
 export class StoreRecordService {
-  constructor(private db: Database) {}
+  constructor(private repo: StoreRecordRepository) {}
 
-  async findMany(query: { limit: number; offset: number }) {
-    return this.db
-      .selectFrom("StoreRecord")
-      .limit(query.limit)
-      .offset(query.offset)
-      .selectAll()
-      .execute();
+  findMany(query: { limit: number; offset: number }) {
+    return this.repo.findMany(query);
   }
 }
