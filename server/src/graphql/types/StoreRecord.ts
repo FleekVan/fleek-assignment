@@ -1,9 +1,9 @@
-import type { StoreRecord } from "@fleek-packages/database/model";
+import type { DB } from "@fleek-packages/database";
 import { ObjectTypeComposer } from "graphql-compose";
 import { GraphQLContext } from "../GraphQLContext";
 
 export const StoreRecordType = ObjectTypeComposer.createTemp<
-  StoreRecord,
+  DB["StoreRecord"],
   GraphQLContext
 >({
   name: "StoreRecord",
