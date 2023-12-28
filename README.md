@@ -19,9 +19,9 @@ https://1dthki8qwg.execute-api.eu-west-1.amazonaws.com/graphql
 
 I ended up focusing a lot more on the architecture of the monorepo, CDK and database schema, and I didn't have time to give the GraphQL API its much needed TLC. Things that are missing:
 
-- `Auhentication` - easy enough to add, [createContext.ts](/server/src/graphql/createContext.ts) should me augmented to read the `Authorization: Bearer` token. The API Gateway CDK setup already has the necessary setup, all that's missing is adding the jwt library: https://github.com/FleekVan/fleek-assignment/blob/cb71f3ab9287a15a770772ba5fd4cd92cd4efa87/server/lib/server-stack.ts#L119-L131
+- `Auhentication` - easy enough to add, [createContext.ts](/server/src/graphql/createContext.ts) should me augmented to read the `Authorization: Bearer` token. The API Gateway CDK setup already has the necessary setup, all that's missing is adding the jwt library: https://github.com/FleekVan/fleek-assignment/blob/9acf1aa86d77426df98d47ec26fff5b499e87dae/server/lib/server-stack.ts#L119-L131
 - Better data validation and error messages - There are many possible approaches to error messages. In the past, I've handled them with Apollo plugins that tansforme known error types on the fly. Here, I used `GraphQLError` directly to map `ZodError` for input validation, or to handle duplicate record database errors. Definitely room for improvement:
-  https://github.com/FleekVan/fleek-assignment/blob/cb71f3ab9287a15a770772ba5fd4cd92cd4efa87/server/src/services/StoreRecordService.ts#L25-L39
+  https://github.com/FleekVan/fleek-assignment/blob/9acf1aa86d77426df98d47ec26fff5b499e87dae/server/src/services/StoreRecordService.ts#L25-L39
 - Any observability. The choices here are varied - we could go with CloudWatch into a Kinesis stream into AthenaDB for logs, we could go with DataDog. For general performance and error monitoring, I've found Sentry to be excellent in the past, as it can provide per-field resolver performance metrics.
 - Didn't have time to do delete, but it's simple enough.
 
@@ -74,7 +74,7 @@ Database schema management with [skeema.io](https://skeema.io). It contains our 
 
 Noteworthy monorepo-wide commands:
 
-- `pnpm skeema` - [a light wrapper](https://github.com/FleekVan/fleek-assignment/blob/main/schema/skeema) around the skeema cli that pulls the database credentials from AWS SecretsManager.
+- `pnpm skeema` - [a light wrapper](/schema/skeema) around the skeema cli that pulls the database credentials from AWS SecretsManager.
 
 ### /packages/config (@fleek-packages/config)
 
@@ -87,7 +87,7 @@ A few notable choices:
 
 <details>
 <summary>The full <code>tsconfig.base.json</code></summary>
-https://github.com/FleekVan/fleek-assignment/blob/8503545a9d207f5a5961aeba5935c863ee087443/packages/config/tsconfig.base.json#L1-L32
+https://github.com/FleekVan/fleek-assignment/blob/9acf1aa86d77426df98d47ec26fff5b499e87dae/packages/config/tsconfig.base.json#L1-L32
 </details>
 
 ### /packages/database (@fleek-packages/database)
