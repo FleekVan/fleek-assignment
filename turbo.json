@@ -1,0 +1,12 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
+    "ci": {
+      "dependsOn": ["topo"]
+    }
+  },
+  "globalDependencies": ["packages/config/tsconfig.base.json"]
+}
