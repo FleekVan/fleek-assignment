@@ -15,7 +15,8 @@ export function createSchema() {
 
   composer.Mutation.addFields({
     storeRecordCreate: StoreRecordType.getResolver("createOne"),
-    storeRecordCrateMany: StoreRecordListType.getResolver("createMany"),
+    storeRecordUpdate: StoreRecordType.getResolver("updateOne"),
+    storeRecordCreateMany: StoreRecordListType.getResolver("createMany"),
   });
 
   return composer.buildSchema();

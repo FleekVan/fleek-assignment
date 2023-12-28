@@ -49,15 +49,63 @@ describe("StoreRecordRepository", () => {
     ).toMatchObject([storeRecord]);
   });
 
+  test("#updateOne updates a store record", async () => {
+    const storeRecordInput = createStoreRecord();
+    const storeRecord = await insertStoreRecord(db, storeRecordInput);
+
+    const result = await subject.updateOne({
+      id: storeRecord.id,
+      name: "new-name",
+      value: "new-value",
+    });
+
+    expect(result).toMatchObject({
+      ...storeRecord,
+      name: "new-name",
+      value: "new-value",
+    });
+  });
+
+  test("#updateOne throws if the id does not exist", async () => {
+    await expect(
+      subject.updateOne({
+        id: 999n,
+        name: "new-name",
+        value: "new-value",
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"No StoreRecord matched the given id"`,
+    );
+  });
+
+  test("#updateOne throws if you try to update to an existing name", async () => {
+    await insertStoreRecord(db, { name: "existing-name" });
+    const storeRecordInput = createStoreRecord({ name: "new-name" });
+    const storeRecord = await insertStoreRecord(db, storeRecordInput);
+
+    await expect(
+      subject.updateOne({
+        id: storeRecord.id,
+        name: "existing-name",
+        value: "new-value",
+      }),
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      `"Duplicate entry 'existing-name' for key 'StoreRecord.name'"`,
+    );
+  });
+
   afterAll(async () => {
     await db.destroy();
   });
 });
 
-function createStoreRecord(): Omit<StoreRecord, "id"> {
+function createStoreRecord(
+  record?: Partial<Omit<StoreRecord, "id">>,
+): Omit<StoreRecord, "id"> {
   return {
     name: faker.string.alphanumeric(10),
     value: faker.music.songName(),
+    ...record,
   };
 }
 
@@ -65,8 +113,16 @@ async function insertStoreRecord(
   db: Database,
   storeRecord?: Partial<Omit<StoreRecord, "id">>,
 ) {
-  await db
-    .insertInto("StoreRecord")
-    .values({ ...createStoreRecord(), ...storeRecord })
-    .execute();
+  return await db.transaction().execute(async (trx) => {
+    const res = await trx
+      .insertInto("StoreRecord")
+      .values({ ...createStoreRecord(), ...storeRecord })
+      .executeTakeFirstOrThrow();
+
+    return trx
+      .selectFrom("StoreRecord")
+      .selectAll()
+      .where("id", "=", res.insertId!)
+      .executeTakeFirstOrThrow();
+  });
 }

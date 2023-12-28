@@ -19,6 +19,34 @@ export class StoreRecordService {
           },
         });
       }
+
+      throw e;
+    }
+  }
+
+  async updateOne(record: { id: bigint; name: string; value: string }) {
+    try {
+      return await this.repo.updateOne(record);
+    } catch (e) {
+      if (e.message === "No StoreRecord matched the given id") {
+        throw new GraphQLError(
+          `No StoreRecord matched the given id: ${record.id}`,
+          {
+            extensions: {
+              code: "BAD_USER_INPUT",
+            },
+          },
+        );
+      }
+
+      if (e.code === "ER_DUP_ENTRY") {
+        throw new GraphQLError("A store record with that name already exists", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        });
+      }
+
       throw e;
     }
   }

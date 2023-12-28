@@ -3,6 +3,9 @@ import { StoreRecordType } from "./StoreRecord";
 import { PaginationMetaType } from "./PaginationMetaType";
 import { PaginationInputSchema } from "../../model/PaginationMeta";
 import { GraphQLContext } from "../GraphQLContext";
+import { zodValidate } from "../../utils/zodValidate";
+import { z } from "zod";
+import { StoreRecordSchema } from "../../schema/StoreRecordSchema";
 
 export const StoreRecordListType = ObjectTypeComposer.createTemp({
   name: "StoreRecordList",
@@ -27,7 +30,7 @@ StoreRecordListType.addResolver({
     GraphQLContext,
     { limit?: number; offset?: number }
   >) => {
-    const query = PaginationInputSchema.parse(args);
+    const query = zodValidate(PaginationInputSchema, args);
     const nodes = await context.services.storeRecord.findMany(query);
     return {
       nodes,
@@ -35,6 +38,37 @@ StoreRecordListType.addResolver({
         total: nodes.length,
         limit: query.limit,
         offset: query.offset,
+      },
+    };
+  },
+});
+
+StoreRecordListType.addResolver({
+  name: "createMany",
+  type: StoreRecordListType.NonNull,
+  args: {
+    records:
+      StoreRecordType.getInputTypeComposer().removeField("id").NonNull.List
+        .NonNull,
+  },
+  resolve: async ({
+    args,
+    context,
+  }: ResolverResolveParams<
+    unknown,
+    GraphQLContext,
+    { records: Array<{ name: string; value: string }> }
+  >) => {
+    const records = zodValidate(z.array(StoreRecordSchema), args.records);
+    const nodes = await Promise.all(
+      records.map((record) => context.services.storeRecord.createOne(record)),
+    );
+    return {
+      nodes,
+      meta: {
+        total: nodes.length,
+        limit: nodes.length,
+        offset: 0,
       },
     };
   },
