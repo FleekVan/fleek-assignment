@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "husky install",
     "postinstall": "preconstruct dev",
-    "db:push:production": "pnpm skeema push production && pnpm run --filter=@fleek-packages/database db:codegen",
+    "db:push:production": "pnpm skeema push production --allow-unsafe && pnpm run --filter=@fleek-packages/database db:codegen",
     "db:diff:production": "pnpm skeema diff production",
     "db:pull:production": "pnpm skeema pull production && pnpm run --filter=@fleek-packages/database db:codegen",
     "ci": "turbo ci"

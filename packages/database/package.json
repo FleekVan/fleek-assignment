@@ -29,7 +29,7 @@
   "scripts": {
     "tsc": "tsc",
     "test": "jest",
-    "db:codegen": "DATABASE_URL=$(pnpm database-url production) pnpm kysely-codegen --dialect mysql --out-file src/db-codegen.ts",
+    "db:codegen": "DATABASE_URL=$(pnpm database-url production) pnpm kysely-codegen --dialect mysql --out-file src/db-codegen.ts && sed -i 's/id: Generated<number>/id: Generated<bigint>/g' src/db-codegen.ts",
     "ci": "npm-run-all -l tsc test"
   },
   "preconstruct": {

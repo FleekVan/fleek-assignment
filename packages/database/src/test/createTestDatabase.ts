@@ -27,7 +27,7 @@ let _container: StartedMySqlContainer | undefined;
  * @internal You should not call this function directly.
  * Use the getTestDatabase() instead
  */
-async function startMySqlContainer() {
+export async function startMySqlContainer() {
   if (_container) {
     return _container;
   }

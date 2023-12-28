@@ -38,6 +38,17 @@ describe("StoreRecordRepository", () => {
     expect(result).toMatchObject([storeRecords[1]]);
   });
 
+  test("#createOne creates a store record", async () => {
+    const storeRecord = createStoreRecord();
+
+    const result = await subject.createOne(storeRecord);
+
+    expect(result).toMatchObject(storeRecord);
+    expect(
+      await db.selectFrom("StoreRecord").selectAll().execute(),
+    ).toMatchObject([storeRecord]);
+  });
+
   afterAll(async () => {
     await db.destroy();
   });
