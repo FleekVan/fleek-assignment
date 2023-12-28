@@ -1,12 +1,22 @@
 import { StoreRecordRepository } from "@fleek-packages/database/repository";
 import { GraphQLError } from "graphql";
+import Dataloader from "dataloader";
 
 export class StoreRecordService {
   constructor(private repo: StoreRecordRepository) {}
 
   async findOne(id: bigint) {
-    return await this.repo.findOne(id);
+    return this.batchFindPKs.load(id);
   }
+
+  private batchFindPKs = new Dataloader(async (pks: readonly bigint[]) => {
+    const records = await this.repo.findPKs(pks);
+    const map = new Map<bigint, (typeof records)[number]>();
+    for (const record of records) {
+      map.set(BigInt(record.id), record);
+    }
+    return pks.map((pk) => map.get(pk));
+  });
 
   async findMany(query: { limit: number; offset: number }) {
     return await this.repo.findMany(query);

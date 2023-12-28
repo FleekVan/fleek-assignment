@@ -7,6 +7,14 @@ export class StoreRecordRepository {
     return await this._findOne(this.db, id);
   }
 
+  async findPKs(pks: readonly bigint[]) {
+    return this.db
+      .selectFrom("StoreRecord")
+      .where("id", "in", pks)
+      .selectAll()
+      .execute();
+  }
+
   async findMany(query: { limit: number; offset: number }) {
     return this.db
       .selectFrom("StoreRecord")

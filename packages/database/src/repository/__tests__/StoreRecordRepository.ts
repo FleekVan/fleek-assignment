@@ -16,6 +16,11 @@ describe("StoreRecordRepository", () => {
     await db.deleteFrom("StoreRecord").execute();
   });
 
+  afterAll(async () => {
+    await db.deleteFrom("StoreRecord").execute();
+    await db.destroy();
+  });
+
   test("#findOne returns a store record", async () => {
     const storeRecord = await insertStoreRecord(db);
 
@@ -30,6 +35,20 @@ describe("StoreRecordRepository", () => {
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"No StoreRecord matched the given id"`,
     );
+  });
+
+  test("#findPKs returns matching records", async () => {
+    const storeRecords = await Promise.all([
+      insertStoreRecord(db),
+      insertStoreRecord(db),
+    ]);
+
+    const result = await subject.findPKs([
+      ...storeRecords.map((r) => r.id),
+      999n,
+    ]);
+
+    expect(result).toHaveLength(2);
   });
 
   test("#findMany returns all store records", async () => {
@@ -108,10 +127,6 @@ describe("StoreRecordRepository", () => {
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"Duplicate entry 'existing-name' for key 'StoreRecord.name'"`,
     );
-  });
-
-  afterAll(async () => {
-    await db.destroy();
   });
 });
 

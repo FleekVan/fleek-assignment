@@ -107,6 +107,9 @@ importers:
       '@fleek-packages/database':
         specifier: workspace:^
         version: link:../packages/database
+      dataloader:
+        specifier: ^2.2.2
+        version: 2.2.2
       graphql:
         specifier: ^16.8.1
         version: 16.8.1

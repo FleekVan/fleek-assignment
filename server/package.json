@@ -14,6 +14,7 @@
     "@as-integrations/aws-lambda": "^3.1.0",
     "@fleek-packages/config": "workspace:^",
     "@fleek-packages/database": "workspace:^",
+    "dataloader": "^2.2.2",
     "graphql": "^16.8.1",
     "graphql-compose": "^9.0.10",
     "zod": "^3.22.4",
