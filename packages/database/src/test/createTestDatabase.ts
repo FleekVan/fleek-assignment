@@ -27,7 +27,7 @@ let _container: StartedMySqlContainer | undefined;
  * @internal You should not call this function directly.
  * Use the getTestDatabase() instead
  */
-export async function startMySqlContainer() {
+async function startMySqlContainer() {
   if (_container) {
     return _container;
   }
@@ -54,7 +54,7 @@ let _config: DatabaseConfig | undefined;
  *
  * @param fromContainer If true, the database config will be loaded from the container and filesystem cache will not be considered
  */
-export async function getTestDatabaseConnectionConfig(): Promise<DatabaseConfig> {
+async function getTestDatabaseConnectionConfig(): Promise<DatabaseConfig> {
   if (_config) {
     return _config satisfies DatabaseConfig;
   }

@@ -16,6 +16,7 @@
     "ci": "turbo ci"
   },
   "dependencies": {
+    "@fleek-assignment/schema": "workspace:^",
     "@fleek-packages/database": "workspace:^",
     "@preconstruct/cli": "^2.8.2",
     "@types/node": "^20.10.5",

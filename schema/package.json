@@ -1,0 +1,11 @@
+{
+  "name": "@fleek-assignment/schema",
+  "version": "1.0.0",
+  "private": true,
+  "bin": {
+    "skeema": "skeema"
+  },
+  "dependencies": {
+    "@fleek-packages/database": "workspace:^"
+  }
+}

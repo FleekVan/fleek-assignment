@@ -6,8 +6,7 @@
   "module": "dist/fleek-packages-database.esm.js",
   "bin": {
     "database-password": "bin/database-password.ts",
-    "database-url": "bin/database-url.ts",
-    "skeema": "fleekdb/skeema"
+    "database-url": "bin/database-url.ts"
   },
   "exports": {
     ".": {

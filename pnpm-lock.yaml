@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fleek-assignment/schema':
+        specifier: workspace:^
+        version: link:schema
       '@fleek-packages/database':
         specifier: workspace:^
         version: link:packages/database
@@ -83,6 +86,12 @@ importers:
       testcontainers:
         specifier: ^10.4.0
         version: 10.4.0
+
+  schema:
+    dependencies:
+      '@fleek-packages/database':
+        specifier: workspace:^
+        version: link:../packages/database
 
   server:
     dependencies:

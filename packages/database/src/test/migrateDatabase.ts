@@ -50,7 +50,7 @@ export async function migrateDatabase(db: Database) {
   ///////////////////////////////////////////////////////
 
   async function prepareMigrationStatements() {
-    const SKEEMA_DIR = path.join(__dirname, "../../fleekdb/fleekdb");
+    const SKEEMA_DIR = path.join(__dirname, "../../../../schema/fleekdb");
     const files = await fs.readdir(SKEEMA_DIR);
     const tableDefinitions = files.filter((f) => f.endsWith(".sql"));
     let statements: string[] = [];
