@@ -4,31 +4,32 @@ Requires: `Node 20`, `pnpm 8`, `Docker`
 
 <details>
   <summary>Full assignment text</summary>
-Fleek Backend Engineer Assignment
+
+# Fleek Backend Engineer Assignment
+
 This assignment aims to assess the backend skills for a prospective backend engineer at Fleek.  It will test the following stack: Typescript, Graphql, MySQL.  In terms of deployment, you can use any cloud provider of your choice but using a Serverless backend for the API is a requirement (AWS preferred, Lambda preferred).  You will have a day to turnaround this assignment.  The following artifacts will be expected: code of application, migration code and schema for db, deployment for application, tests and a readme. Your assignment will be assessed based on the following:
-Correctness
-Code quality
-Written response
-Testing
-Bonus points: monitoring and performance data/analysis
+ - Correctness
+ - Code quality
+ - Written response
+ - Testing
+ - Bonus points: monitoring and performance data/analysis
 
 Here are the specifications for the assignments, please create a Github repo to push this to when all is complete.
 
-Graphql API
-Schema & deployment: Design a straightforward key-value pair database schema. Execute query and mutation API calls against this database endpoint, deploying it as a lambda function.
-Authentication: Ensure that the lambda function is accessible only to authenticated requests.
-Data validation: To enhance data integrity and security, implement some data validation mechanisms of your choice.
+### Graphql API
+ - Schema & deployment: Design a straightforward key-value pair database schema. Execute query and mutation API calls against this database endpoint, deploying it as a lambda function.
+ - Authentication: Ensure that the lambda function is accessible only to authenticated requests.
+ - Data validation: To enhance data integrity and security, implement some data validation mechanisms of your choice.
 
-CRUD Operations
-CRUD operations: Develop a lambda function that conducts CRUD operations on the deployed GraphQL database. This involves sending authenticated requests to the endpoint established in the first part.
-Authentication: Utilize JSON Web Tokens (JWT) to enforce that only authenticated requests from the caller are accepted by the lambda.
-Batch processing: Support batch operations by allowing users to perform multiple updates or deletions in a single command, improving efficiency for managing larger datasets.
-Error handling: Enhance error handling mechanisms to provide informative error messages and gracefully handle various scenarios, such as validation errors or unauthorized access attempts.
+### CRUD Operations
+ - CRUD operations: Develop a lambda function that conducts CRUD operations on the deployed GraphQL database. This involves sending authenticated requests to the endpoint established in the first part.
+ - Authentication: Utilize JSON Web Tokens (JWT) to enforce that only authenticated requests from the caller are accepted by the lambda.
+ - Batch processing: Support batch operations by allowing users to perform multiple updates or deletions in a single command, improving efficiency for managing larger datasets.
+ - Error handling: Enhance error handling mechanisms to provide informative error messages and gracefully handle various scenarios, such as validation errors or unauthorized access attempts.
 
-Written component (README.md)
-General: Overview of your design choices
-Improvements: If you were to release this into production, what improvements would you make?
-
+### Written component (README.md)
+ - General: Overview of your design choices
+ - Improvements: If you were to release this into production, what improvements would you make?
 ---
 </details>
 
