@@ -2,6 +2,38 @@
 
 Requires: `Node 20`, `pnpm 8`, `Docker`
 
+<details>
+  <summary>Full assignment text</summary>
+Fleek Backend Engineer Assignment
+This assignment aims to assess the backend skills for a prospective backend engineer at Fleek.  It will test the following stack: Typescript, Graphql, MySQL.  In terms of deployment, you can use any cloud provider of your choice but using a Serverless backend for the API is a requirement (AWS preferred, Lambda preferred).  You will have a day to turnaround this assignment.  The following artifacts will be expected: code of application, migration code and schema for db, deployment for application, tests and a readme. Your assignment will be assessed based on the following:
+Correctness
+Code quality
+Written response
+Testing
+Bonus points: monitoring and performance data/analysis
+
+Here are the specifications for the assignments, please create a Github repo to push this to when all is complete.
+
+Graphql API
+Schema & deployment: Design a straightforward key-value pair database schema. Execute query and mutation API calls against this database endpoint, deploying it as a lambda function.
+Authentication: Ensure that the lambda function is accessible only to authenticated requests.
+Data validation: To enhance data integrity and security, implement some data validation mechanisms of your choice.
+
+CRUD Operations
+CRUD operations: Develop a lambda function that conducts CRUD operations on the deployed GraphQL database. This involves sending authenticated requests to the endpoint established in the first part.
+Authentication: Utilize JSON Web Tokens (JWT) to enforce that only authenticated requests from the caller are accepted by the lambda.
+Batch processing: Support batch operations by allowing users to perform multiple updates or deletions in a single command, improving efficiency for managing larger datasets.
+Error handling: Enhance error handling mechanisms to provide informative error messages and gracefully handle various scenarios, such as validation errors or unauthorized access attempts.
+
+Written component (README.md)
+General: Overview of your design choices
+Improvements: If you were to release this into production, what improvements would you make?
+
+---
+</details>
+
+
+
 ## Preview URL
 
 https://1dthki8qwg.execute-api.eu-west-1.amazonaws.com/graphql
@@ -29,7 +61,12 @@ I ended up focusing a lot more on the architecture of the monorepo, CDK and data
 
 I strive for end-to-end type-safety, and write the tools to make that trivial for the developer. To that end:
 
-- Database is managed with [skeema.io](https://skeema.io). This means that we do not generate migration scripts. Instead, for any given commit in the monorepo, we have a singular definition of what the database looks like, encoded in plain `.sql` files. When we need to "migrate", we let `skeema` automatically generate the necessary DDL statements. We can put checks in place that prevent gate any destructive database operations (eg, removing a column). It's also easy to generate previews of DDL statements inside PRs, so that we know what database changes will be executed when a particular branch is merged.
+- Database is managed with [skeema.io](https://skeema.io). This means that we do not generate migration scripts. Instead, for any given commit in the monorepo, we have a singular definition of what the database looks like, encoded in plain `.sql` files. When we need to "migrate", we let `skeema` automatically generate the necessary DDL statements. We can put checks in place that prevent gate any destructive database operations (eg, removing a column). It's also easy to generate previews of DDL statements inside PRs, so that we know what database changes will be executed when a particular branch is merged. With the above approach, combined with some operational rules, I have implemented zero-downtime data migrations in the past using a 5 step process:
+    - Part 1 - Makes any additions to the database schema in support of the code that will come later. Only add tables and columns to the database, never do unsafe changes or deletions. This does not affect existing code.
+    - Part 2 - Deploy new code that augments the existing code and starts WRITING to the new fields and tables but continues to also write to the old ones. READ is still executed against the old fields. These writes can be verified in the production environment.
+    - Part 3 - Manually execute migration scripts to copy any old data from old fields and tables to the new ones. At this stage all the data should be migrated and any new data created by users or processes will be written to both the old and the new structures.
+    - Part 4 - Switch the READ code to READ from the new structures. We continue to WRITE to both old and new structures. This is the highest risk step.
+    - Part 5 - Remove the old WRITE code. Remove all unused schema. This is low (but not zero) risk, as everything being removed is already out of use.
 - We generate database types by directly introspecting our database. In the past, I've also done it by introspecting the `.sql` files managed by `skeema`. This means we have TS types that are a guaranteed match to our database definition. If the database definition changes, the types change. With [graphql-codegen](https://the-guild.dev/graphql/codegen) or [tRPC](https://trpc.io/) it's then trivial to propagate any database changes all the way into React components on the frontend, giving us true end-to-end type-safety, from a database column through any API and all the way into a React form input.
 
 ## Monorepo
